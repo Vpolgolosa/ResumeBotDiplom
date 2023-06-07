@@ -1,0 +1,43 @@
+{% extends "base_generic.html" %}
+{% load poll_extras %}
+
+{% block content %}
+<div class="bg-body-secondary pt-2 mb-3">
+    <div class="container py-5">
+        <h1 class="display-4">Регистрация</h1>
+    </div>
+</div>
+
+<ul class="container">
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <p>
+                <label class="w-100 mb-1" for="{{ field.auto_id }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.auto_id != "id_password1" %}
+                    {% if field.help_text %}
+                    <ul class="helptext">
+                        <li>{{ field.help_text }}</li>
+                    </ul>
+                    {% endif %}
+                {% else %}
+                    <span class="helptext">{{ field.help_text }}</span>
+                {% endif %}
+                {% if form.errors %}
+                  <ul>
+                    {% for error in field.errors %}
+                      <li class="text-danger">{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+            </p>
+        {% endfor %}
+        <div class="text-center mt-4"><input class="btn btn-primary btn-lg" type="submit" value="Подтвердить"></div>
+    </form>
+
+    <div class="text-center mt-4"><a class="btn btn-secondary btn-sm" href="{% url 'login' %}">Вернуться ко входу</a></div>
+    <div class="text-center mt-4"><a class="btn btn-secondary btn-sm" href="#">Вернуться на главную</a></div>
+    <br>
+</ul>
+{% endblock %}

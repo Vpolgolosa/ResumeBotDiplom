@@ -1,0 +1,111 @@
+{% extends "base_generic.html" %}
+{% load poll_extras %}
+
+{% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="bg-body-secondary pt-2 mb-3">
+  <div class="container py-5">
+    <h1 class="display-3">Добро пожаловать!</h1>
+    <p>Здесь Вы можете создать, просмотреть, изменить или удалить Ваше резюме!</p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Example row of columns -->
+  <div class="row">
+    <div class="col-md-4">
+      {% if user.is_authenticated %}
+      {% if request.user.is_staff %}
+      <h2>Создать</h2>
+      <p>Создайте Ваше резюме! </p>
+      <p><a class="btn btn-secondary" href="/create" role="button">Выбрать »</a></p><br><br>
+      {% else %}
+      {% if request.user|has_resume %}
+      <h2>Создать</h2>
+      <p>Вы уже создали резюме! </p><br><br>
+
+      {% else %}
+      <h2>Создать</h2>
+      <p>Создайте Ваше резюме! </p>
+      <p><a class="btn btn-secondary" href="/create" role="button">Выбрать »</a></p><br><br>
+      {% endif %}{% endif %}
+      {% else %}
+      <h2>Создать</h2>
+      <p> Сначала авторизируйтесь! </p>
+      <p><a class="btn btn-secondary" href="{% url 'login'%}?next={{request.path}}" role="button">Выбрать »</a></p><br><br>
+      {% endif %}
+    </div>
+
+  </div>
+  <hr/>
+  <div class="row">
+    <div class="col-md-4">
+      {% if user.is_authenticated %}
+      {% if request.user.is_staff %}
+      <h2>Изменить</h2>
+      <p>Изменить созданные резюме </p>
+      <p><a class="btn btn-secondary" href="/update" role="button">Выбрать »</a></p><br><br>
+      {% else %}
+      {% if request.user|has_resume %}
+      <h2>Изменить</h2>
+      <p>Изменить созданные резюме </p>
+      <p><a class="btn btn-secondary" href="/update" role="button">Выбрать »</a></p><br><br>
+      {% else %}
+      <h2>Изменить</h2>
+      <p>Сначала создайте резюме!</p>
+      <p><a class="btn btn-secondary" href="/create" role="button">Выбрать »</a></p><br><br>
+      {% endif %}{% endif %}
+      {% else %}
+      <h2>Изменить</h2>
+      <p> Сначала авторизируйтесь! </p>
+      <p><a class="btn btn-secondary" href="{% url 'login'%}?next={{request.path}}" role="button">Выбрать »</a></p><br><br>
+      {% endif %}
+    </div>
+    <div class="col-md-4">
+      {% if user.is_authenticated %}
+      {% if request.user.is_staff %}
+      <h2>Показать</h2>
+      <p>Показать созданные резюме </p>
+      <p><a class="btn btn-secondary" href="/show" role="button">Выбрать »</a></p><br><br>
+      {% else %}
+      {% if request.user|has_resume %}
+      <h2>Показать</h2>
+      <p>Показать созданные резюме </p>
+      <p><a class="btn btn-secondary" href="/show" role="button">Выбрать »</a></p><br><br>
+      {% else %}
+      <h2>Показать</h2>
+      <p>Сначала создайте резюме!</p>
+      <p><a class="btn btn-secondary" href="/create" role="button">Выбрать »</a></p><br><br>
+      {% endif %}{% endif %}
+      {% else %}
+      <h2>Показать</h2>
+      <p> Сначала авторизируйтесь! </p>
+      <p><a class="btn btn-secondary" href="{% url 'login'%}?next={{request.path}}" role="button">Выбрать »</a></p><br><br>
+      {% endif %}
+    </div>
+    <div class="col-md-4">
+      {% if user.is_authenticated %}
+      {% if request.user.is_staff %}
+      <h2>Удалить</h2>
+      <p>Удалить созданные резюме </p>
+      <p><a class="btn btn-secondary" href="/delete" role="button">Выбрать »</a></p><br><br>
+      {% else %}
+      {% if request.user|has_resume %}
+      <h2>Удалить</h2>
+      <p>Удалить созданные резюме </p>
+      <p><a class="btn btn-secondary" href="/delete" role="button">Выбрать »</a></p><br><br>
+      {% else %}
+      <h2>Удалить</h2>
+      <p>Сначала создайте резюме!</p>
+      <p><a class="btn btn-secondary" href="/create" role="button">Выбрать »</a></p><br><br>
+      {% endif %}{% endif %}
+      {% else %}
+      <h2>Удалить</h2>
+      <p> Сначала авторизируйтесь! </p>
+      <p><a class="btn btn-secondary" href="{% url 'login'%}?next={{request.path}}" role="button">Выбрать »</a></p><br><br>
+      {% endif %}
+    </div>
+  </div>
+  <hr/>
+</div> <!-- /container -->
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "base_generic.html" %}
+{% load poll_extras %}
+
+{% block content %}
+<div class="bg-body-secondary pt-2 mb-3">
+    <div class="container py-5">
+        <h1 class="display-4">Просмотр резюме</h1>
+        {% if request.user|has_group:"Staff" %}
+        <p>Здесь Вы можете просмотреть резюме! Пожалуйста, введите номер телефона в соответствующее поле!</p>
+        {% else %}
+        <p>Здесь Вы можете просмотреть свое резюме! Пожалуйста, нажмите кнопку подтверждения!</p>
+        {%endif%}
+    </div>
+</div>
+<ul class="container">
+    <br>
+    <form method="POST">
+        {% if request.user|has_group:"Staff" %}
+            {% csrf_token %}
+            {% for field in srchform %}
+                <p>
+                    <label class="w-100 mb-1" for="{{ field.auto_id }}">{{ field.label }}</label>
+                    {{ field }}
+                </p>
+            {% endfor %}
+            {% for chse in chses %}
+                <br>
+                {% if "1" in chse %}
+                    Введите номер телефона:
+                    <br>
+                    <div class="w-50">
+                        <input class="w-50" type="tel" name="srchph" pattern="[7-8]{1}[0-9]{3}[0-9]{3}[0-9]{4}"/>
+                    </div>
+                {%endif%}
+                {% if "2" in chse %}
+                    <div class="w-50">Укажите наличие или отсутствие ноутбука:
+                        <input type='hidden' value='0' name='srchla'/>
+                        <input class="w-50 check" type="checkbox" name="srchla"/>
+                    </div>
+                {%endif%}
+                {% if "3" in chse %}
+                    {% csrf_token %}
+                    {% for field in tyform %}
+                        <p class="w-50">
+                            <label class="w-100 mb-1" for="{{ field.auto_id }}">{{ field.label }}</label>
+                            {{ field }}
+                        </p>
+                    {% endfor %}
+                {%endif%}
+            {% endfor %}
+            <br>
+            <div class="text-center mt-4"><input class="btn btn-primary btn-lg" type="submit" value="Подтвердить" /></div>
+        {% else %}
+            {% csrf_token %}
+            <div class="text-center mt-4"><input class="btn btn-primary btn-lg" name="users" type="submit" value="Подтвердить" /></div>
+        {% endif %}
+    </form><br/><br/><hr>
+
+    {% if did is not None %}
+        {% if resumes is not None %}
+            <br>
+            {% if request.user|has_group:"Staff" %}
+                <h3>Резюме с этими параметрами:</h3>
+            {% else %}
+                <h3>Ваше резюме:</h3>
+            {% endif %}
+            <br>
+        {% else %}
+            <br>
+            {% if request.user|has_group:"Staff" %}
+                <h3>Резюме с этими параметрами не найдено</h3>
+            {% else %}
+                <h3>Ваше резюме не найдено</h3>
+            {% endif %}
+            <br><hr/>
+        {% endif %}
+    {% endif %}
+
+    {% for resume in resumes %}
+    <hr/>
+    <div class="text-start mt-4">
+        {% if resume.photo is not None and resume.photo.url is not None %}
+            <div class="imgblock position-relative overflow-hidden w-auto mb-1">
+                <img src="{{resume.photo.url}}" class="position-absolute top-50 h-100 object-fit-cover img-fluid img-thumbnail rounded mx-auto d-block">
+            </div>
+        {%endif%}<br>
+        {% if resume.fio is not None %}
+            <h5 class="w-100">ФИО: </h5>
+            <h5 class="ms-3">{{resume.fio}}</h5>
+        {%endif%}
+        {% if resume.birthday is not None %}
+            <h6 class="w-100">Дата рождения: </h6>
+            <h6 class="ms-3">{{resume.birthday}}</h6>
+        {%endif%}
+        {% if resume.grade is not None %}
+            <h6 class="w-100">Номер курса: </h6>
+            <h6 class="ms-3">{{resume.grade}} курс</h6>
+        {%endif%}
+        {% if resume.institution is not None %}
+            <h6 class="w-100">Наименование учебного заведения: </h6>
+            <h6 class="ms-3">{{resume.institution}}</h6>
+        {%endif%}
+        {% if resume.curator is not None %}
+            <h6 class="w-100">ФИО куратора: </h6>
+            <h6 class="ms-3">{{resume.curator}}</h6>
+        {%endif%}
+        {% if resume.spec is not None %}
+            <h6 class="w-100">Наименование специальности: </h6>
+            <h6 class="ms-3">{{resume.spec}}</h6>
+        {%endif%}
+        {% if resume.skills is not None %}
+            <h6 class="w-100">Ключевые навыки: </h6>
+            <h6 class="ms-3">{{resume.skills}}</h6>
+        {%endif%}
+        {% if resume.projects is not None %}
+            <h6 class="w-100">Реализованные проекты: </h6>
+            <h6 class="ms-3">{{resume.projects}}</h6>
+        {%endif%}
+        {% if resume.project_links is not None %}
+            <h6 class="w-100">Ссылки на реализованные проекты: </h6>
+            <h6 class="ms-3">{{resume.project_links}}</h6>
+        {%endif%}
+        {% if resume.education is not None %}
+            <h6 class="w-100">Образование: </h6>
+            <h6 class="ms-3">{{resume.education}}</h6>
+        {%endif%}
+        {% if resume.first_lang is not None %}
+            <h6 class="w-100">Родной язык: </h6>
+            <h6 class="ms-3">{{resume.first_lang}}</h6>
+        {%endif%}
+        {% if resume.other_lang is not None %}
+            <h6 class="w-100">Другие языки: </h6>
+            <h6 class="ms-3">{{resume.other_lang}}</h6>
+        {%endif%}
+        {% if resume.country is not None %}
+            <h6 class="w-100">Гражданство: </h6>
+            <h6 class="ms-3">{{resume.country}}</h6>
+        {%endif%}
+        {% if resume.pract_name is not None %}
+            <h6 class="w-100">Наименование практики: </h6>
+            <h6 class="ms-3">{{resume.pract_name}}</h6>
+        {%endif%}
+        {% if resume.pract_period_from is not None %}
+            <h6 class="w-100">Дата начала практики: </h6>
+            <h6 class="ms-3">{{resume.pract_period_from}}</h6>
+        {%endif%}
+        {% if resume.pract_period_to is not None %}
+            <h6 class="w-100">Дата окончания практики: </h6>
+            <h6 class="ms-3">{{resume.pract_period_to}}</h6>
+        {%endif%}
+        {% if resume.pract_jobs is not None %}
+            <h6 class="w-100">Задачи, которые необходимо выполнить на практике: </h6>
+            <h6 class="ms-3">{{resume.pract_jobs}}</h6>
+        {%endif%}
+        {% if resume.linkedin is not None %}
+            <h6 class="w-100">Ссылка на профиль Linkedin: </h6>
+            <h6 class="ms-3">{{resume.linkedin}}</h6>
+        {%endif%}
+        {% if resume.pract_tasks is not None %}
+            <h6 class="w-100">Тип выполняемых работ: </h6>
+            <h6 class="ms-3">{{resume.pract_tasks}}</h6>
+        {%endif%}
+        {% if resume.laptop is not None %}
+            <h6 class="w-100">Наличие ноутбука: </h6>
+            <h6 class="ms-3">{{resume.laptop}}</h6>
+        {%endif%}<br>
+    </div>
+    {% endfor %}
+</ul>
+{% endblock %}
