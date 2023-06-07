@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+{% load poll_extras %}
+{% block content %}
+
+
+<div class="bg-body-secondary pt-2 mb-3">
+    <div class="container py-5">
+      <h1 class="display-3">Авторизация</h1>
+    </div>
+  </div>
+
+<div class="container">
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table>
+
+    <tr>
+      <td>{{ form.username.label_tag }}</td>
+      <td>{{ form.username }}</td>
+    </tr>
+
+    <tr>
+      <td>{{ form.password.label_tag }}</td>
+      <td>{{ form.password }}</td>
+    </tr>
+    </table>
+    <br>
+    {% if form.errors %}
+        <p>Имя пользователя или пароль введены неправильно. Пожалуйста, повторите попытку.</p>
+    {% endif %}
+        <br>
+
+    <div class="d-flex justify-content-center"><p><input class="btn btn-primary btn-lg" type="submit" value="Войти" /></p></div>
+    <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+    {# Assumes you setup the password_reset view in your URLconf #}
+    <div class="d-flex justify-content-center"><p><a class="btn btn-secondary btn-sm" href="{% url 'password_reset' %}">Забыли пароль?</a></p></div>
+    <br><br><hr/>
+</div>
+
+{% endblock %}

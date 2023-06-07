@@ -1,0 +1,11 @@
+django-admin.exe startproject [назв. проекта] .  -создание стартовой структуры файлов проекта
+python manage.py migrate   -выполнение команд, вложенных в манаге пу
+python manage.py runserver   -запуск веб-сервера
+python manage.py startapp [назв. проекта 2]   -создание полной структуры проекта
+python manage.py makemigrations [назв. проекта 2]   -применение изменений в models.py шаг 1
+python manage.py migrate [назв. проекта 2]   -применение изменений в models.py шаг 2
+python manage.py createsuperuser   -создание суперпользователя
+
+В settings.py
+
+ALLOWED_HOSTS = []  -поле для ввода адреса хоста (по умолчанию - локалхост)
